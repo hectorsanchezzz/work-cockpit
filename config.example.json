@@ -1,0 +1,126 @@
+{
+ "_help": "Edit freely. Lanes appear in this order. hours_budget is hours per week (null hides it). Mapping rules are checked top to bottom: title_keywords first, then the source-specific map, then the team default.",
+ "stale_days": 14,
+ "lanes": [
+  {
+   "key": "axis",
+   "name": "Axis Data Labs",
+   "short": "Axis",
+   "hours_budget": null
+  },
+  {
+   "key": "bs",
+   "name": "BSInvestors / Blvck Sigma",
+   "short": "Blvck Sigma",
+   "hours_budget": null
+  },
+  {
+   "key": "delvion",
+   "name": "Delvion",
+   "hours_budget": null
+  },
+  {
+   "key": "pbe",
+   "name": "Personal Brand Engine",
+   "short": "PBE",
+   "hours_budget": null
+  },
+  {
+   "key": "tfg",
+   "name": "TFG / UAB",
+   "short": "TFG",
+   "hours_budget": null
+  },
+  {
+   "key": "personal",
+   "name": "Personal",
+   "hours_budget": null
+  }
+ ],
+ "title_keywords": {
+  "Client A": "axis",
+  "Delvion": "delvion",
+  "TFG": "tfg"
+ },
+ "linear_projects": {
+  "Some Linear project": "axis",
+  "Another project": "delvion",
+  "TFG": "tfg"
+ },
+ "rize_projects": {
+  "Example Rize project": "axis"
+ },
+ "linear_team_default": {
+  "TEAM1": "axis",
+  "TEAM2": "delvion"
+ },
+ "reminder_lists": {
+  "work list": "axis",
+  "personal": "personal"
+ },
+ "reminder_skip_lists": [
+  "groceries"
+ ],
+ "calendars": {
+  "Work calendar": "axis",
+  "you@example.com": "personal"
+ },
+ "calendar_keyword_only": [
+  "blocks"
+ ],
+ "calendar_skip": [
+  "Birthdays",
+  "holidays"
+ ],
+ "github_accounts": [
+  "your-github-login"
+ ],
+ "github_repo_keywords": {
+  "tfg": "tfg",
+  "atlas": "delvion"
+ },
+ "github_owners": {
+  "Some-Org": "axis",
+  "your-github-login": "personal"
+ },
+ "vault_path": "~/development/personal-vault",
+ "vault_folders": {
+  "axis": [
+   "Business/Axis Data Labs"
+  ],
+  "bs": [
+   "Business/Blvck Sigma"
+  ],
+  "delvion": [
+   "Business/Delvion"
+  ],
+  "pbe": [
+   "Personal/Personal Brand"
+  ],
+  "tfg": [
+   "Academic/TFG"
+  ],
+  "personal": [
+   "Personal/Money",
+   "Personal/Direction",
+   "Personal/Self"
+  ]
+ },
+ "redact_words": [
+  "ClientName"
+ ],
+ "vault_ignore_commits": [],
+ "_help_vault": "vault_ignore_commits: bulk sync commits that should not count as touching a lane.",
+ "code_root": "~/development",
+ "code_skip": [
+  "personal-vault",
+  "cockpit"
+ ],
+ "git_author_emails": [
+  "you@example.com"
+ ],
+ "code_path_keywords": {
+  "axis-internal": "axis",
+  "tfg": "tfg"
+ }
+}

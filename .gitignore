@@ -1,0 +1,10 @@
+# Personal config: client names, emails, account names. Copy config.example.json to start.
+config.json
+config.json.bak
+# Generated: Linear titles, reminders, calendar, rendered pages.
+data/
+out/*
+!out/icon.png
+logs/
+__pycache__/
+.DS_Store
