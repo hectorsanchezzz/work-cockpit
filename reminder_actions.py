@@ -23,7 +23,7 @@ import re
 import subprocess
 
 ROOT = __import__("pathlib").Path(__file__).resolve().parent
-EKCTL = os.path.expanduser("~/bin/ekctl")
+from platform_util import EKCTL
 LOG = ROOT / "logs" / "actions.log"
 LOCAL = ROOT / "data" / "local.json"
 ACTIONS = {"done", "move", "nodate", "rename", "cancel", "think"}
@@ -37,7 +37,9 @@ class Refused(Exception):
 
 
 def ek(*args):
-    r = subprocess.run([EKCTL, *args], capture_output=True, text=True, timeout=30)
+    if not EKCTL:
+        raise Refused("Reminders are only available on macOS.")
+    r =subprocess.run([EKCTL, *args], capture_output=True, text=True, timeout=30)
     if r.returncode:
         raise RuntimeError((r.stderr or r.stdout).strip()[:200] or "ekctl failed")
     return r.stdout
@@ -84,7 +86,7 @@ def open_reminders(skip):
 def log(line):
     LOG.parent.mkdir(exist_ok=True)
     stamp = dt.datetime.now().astimezone().isoformat(timespec="seconds")
-    with LOG.open("a") as f:
+    with LOG.open("a", encoding="utf-8") as f:
         f.write(f"{stamp} {line}\n")
 
 

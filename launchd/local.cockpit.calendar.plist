@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0"><dict>
-  <key>Label</key><string>local.cockpit.calendar</string>
-  <key>ProgramArguments</key><array><string>/Users/janmunts/bin/ekctl</string><string>agenda</string><string>--days</string><string>8</string></array>
-  <key>ProcessType</key><string>Background</string>
-  <key>StandardOutPath</key><string>/Users/janmunts/development/cockpit/data/agenda.json</string>
-  <key>StandardErrorPath</key><string>/Users/janmunts/development/cockpit/logs/calendar.err</string>
-</dict></plist>

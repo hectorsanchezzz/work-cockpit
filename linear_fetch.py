@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Read-only Linear fetch for the work cockpit, over Linear's GraphQL API.
 
-The personal API key lives in the macOS Keychain (service "cockpit-linear").
+The personal API key comes from the COCKPIT_LINEAR_KEY environment variable or the OS credential
+store (keyring service "cockpit-linear": Windows Credential Manager or the macOS Keychain).
 It is read into memory for the requests only, never printed or written.
 Writes data/linear.json in the same schema the renderer already reads.
 On any failure the previous data/linear.json is kept and the error is
@@ -35,12 +36,8 @@ query($filter: IssueFilter, $after: String) {
 
 
 def api_key():
-    r = subprocess.run(["/usr/bin/security", "find-generic-password", "-s", KEYCHAIN_SERVICE, "-w"],
-                       capture_output=True, text=True)
-    key = r.stdout.strip()
-    if r.returncode != 0 or not key:
-        raise RuntimeError(f"no API key in Keychain (service {KEYCHAIN_SERVICE})")
-    return key
+    from platform_util import secret
+    return secret(KEYCHAIN_SERVICE, "COCKPIT_LINEAR_KEY")
 
 
 def fetch(key, flt, cap=300):
@@ -91,6 +88,11 @@ if __name__ == "__main__":
     except Exception as e:  # keep the old snapshot, surface the error on the page
         msg = f"Linear: {type(e).__name__}: {e}"[:240]
         print("ERROR", msg, file=sys.stderr)
+        snap = ROOT / "data" / "linear.json"
+        if not snap.exists():  # first run without a key: an empty snapshot, so the page still renders
+            (ROOT / "data").mkdir(exist_ok=True)
+            snap.write_text(json.dumps({"generated": dt.datetime.now().astimezone().isoformat(timespec="minutes"),
+                                        "aleix_review": [], "mine_started": [], "mine_todo": []}))
         lp = ROOT / "data" / "local.json"
         try:
             local = json.loads(lp.read_text())

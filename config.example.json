@@ -65,6 +65,13 @@
   "Work calendar": "axis",
   "you@example.com": "personal"
  },
+ "_help_calendar_ics": "calendar_ics: iCal (.ics) feeds, the calendar source on Windows. 'name' is the calendar name used in 'calendars' above. The URL may hold a secret token: keep it only in config.json, which is git-ignored.",
+ "calendar_ics": [
+  {
+   "name": "Work calendar",
+   "url": "https://example.com/calendar.ics"
+  }
+ ],
  "calendar_keyword_only": [
   "blocks"
  ],

@@ -93,7 +93,10 @@ COLS = collect()
 def _think_list():
     """The Reminders list called Think (any case), or None. Needs thinking works only when it exists."""
     try:
-        r = subprocess.run([os.path.expanduser("~/bin/ekctl"), "lists"], capture_output=True, text=True, timeout=10)
+        from platform_util import EKCTL
+        if not EKCTL:
+            return None
+        r = subprocess.run([EKCTL, "lists"], capture_output=True, text=True, timeout=10)
         return next((x["title"] for x in json.loads(r.stdout) if (x.get("title") or "").lower() == "think"), None)
     except (OSError, ValueError, subprocess.SubprocessError, TypeError, KeyError, AttributeError):
         return None

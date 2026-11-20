@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Read-only collector for the work cockpit.
 
-Pulls Apple Reminders and Calendar (via ~/bin/ekctl, read commands only),
+Pulls Calendar from iCal feeds (config calendar_ics) and, on macOS, Apple Reminders and Calendar
+(via ~/bin/ekctl, read commands only),
 GitHub PRs and recent commits (via gh, one call per account), and the last
 vault commit per lane folder, plus the last commit and newest
 uncommitted edit in every git repo under code_root (read-only git log/status). Writes data/local.json. Never writes to any source.
@@ -15,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 CFG = json.loads((ROOT / "config.json").read_text())
-EKCTL = os.path.expanduser("~/bin/ekctl")
+from platform_util import EKCTL  # None when there is no ekctl (Windows)
 errors = []
 
 
@@ -27,6 +28,9 @@ def run(cmd, env=None, timeout=60):
 
 
 def gh_env(user):
+    import shutil
+    if not shutil.which("gh"):
+        raise RuntimeError("GitHub CLI (gh) is not installed")
     tok = subprocess.run(["gh", "auth", "token", "-u", user], capture_output=True, text=True).stdout.strip()
     if not tok:
         raise RuntimeError(f"no gh token for {user}")
@@ -36,7 +40,9 @@ def gh_env(user):
 
 
 def reminders():
-    skip = {s.lower() for s in CFG["reminder_skip_lists"]}
+    if not EKCTL:  # Apple Reminders only exists on macOS; off elsewhere
+        return []
+    skip ={s.lower() for s in CFG["reminder_skip_lists"]}
     out = []
     for r in json.loads(run([EKCTL, "reminders"])):
         if r.get("completed") or (r.get("list") or "").lower() in skip:
@@ -73,6 +79,14 @@ def events_via_launchd():
 
 
 def events(days=7):
+    skip = set(CFG["calendar_skip"])
+    if CFG.get("calendar_ics"):  # iCal feeds: the way on Windows
+        import ics_feed
+        raw, errs = ics_feed.fetch(CFG["calendar_ics"], days=days)
+        errors.extend(errs)
+        return [e for e in raw if e.get("calendar") not in skip]
+    if not EKCTL:  # no Calendar source configured
+        return []
     today = dt.date.today()
     try:
         raw = json.loads(run([EKCTL, "events", "--from", today.isoformat(),
@@ -118,6 +132,8 @@ def github():
 def vault():
     base = os.path.expanduser(CFG["vault_path"])
     out = {}
+    if not os.path.isdir(base):  # no vault on this machine: nothing to read, not an error
+        return out
     for lane, folders in CFG["vault_folders"].items():
         best = None
         ignore = tuple(CFG.get("vault_ignore_commits", []))

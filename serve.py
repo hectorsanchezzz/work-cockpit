@@ -24,12 +24,12 @@ import settings
 import sources
 
 ROOT = sources.ROOT
-PY = "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
+from platform_util import LOCK, PY, child_env
+
 PORT = 8765
 HOSTS = {f"127.0.0.1:{PORT}", f"localhost:{PORT}"}
 ORIGINS = {f"http://{h}" for h in HOSTS}
-LOCK = "/tmp/cockpit-refresh.lock"
-ENV = {**os.environ, "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:" + os.path.expanduser("~/bin")}
+ENV = child_env()
 
 
 def skip_lists():

@@ -30,11 +30,15 @@ CFG = json.loads((ROOT / "config.json").read_text())
 OUT = ROOT / "data" / "extras.json"
 FIELDS = "repository,number,title,createdAt,updatedAt,isDraft,url"
 RIZE_URL = "https://api.rize.io/api/v1/graphql"
-SSL_CTX = ssl.create_default_context(cafile="/etc/ssl/cert.pem")  # python.org Python ships without CA certs
+_CA = "/etc/ssl/cert.pem"  # python.org Python on macOS ships without CA certs; Windows uses its own store
+SSL_CTX = ssl.create_default_context(cafile=_CA if os.path.exists(_CA) else None)
 
 
 def gh_env(user):
-    r = subprocess.run(["gh", "auth", "token", "-u", user], capture_output=True, text=True, timeout=15)
+    import shutil
+    if not shutil.which("gh"):
+        raise RuntimeError("GitHub CLI (gh) is not installed")
+    r =subprocess.run(["gh", "auth", "token", "-u", user], capture_output=True, text=True, timeout=15)
     tok = r.stdout.strip()
     if not tok:
         raise RuntimeError("not signed in to gh")
@@ -77,12 +81,8 @@ def github_prs(include_bs):
 
 
 def rize_key():
-    r = subprocess.run(["security", "find-generic-password", "-s", "cockpit-rize", "-a", os.environ.get("USER", ""), "-w"],
-                       capture_output=True, text=True, timeout=15)
-    key = r.stdout.strip()
-    if r.returncode or not key:
-        raise RuntimeError("no key in the Keychain (service cockpit-rize)")
-    return key
+    from platform_util import secret
+    return secret("cockpit-rize", "COCKPIT_RIZE_KEY")
 
 
 def rize_query(key, query, variables):
@@ -144,7 +144,8 @@ def rize():
     return out
 
 
-CLAUDE_GLOB = os.path.expanduser("~/Library/Application Support/Claude/claude-code-sessions/*/*/local_*.json")
+_APPDATA = os.environ.get("APPDATA") or os.path.expanduser("~/Library/Application Support")
+CLAUDE_GLOB = os.path.join(_APPDATA, "Claude", "claude-code-sessions", "*", "*", "local_*.json")
 CLAUDE_DAYS = 7
 
 
@@ -169,7 +170,7 @@ def claude_sessions():
     items, bad = [], 0
     for f in files:
         try:
-            d = json.loads(open(f).read())
+            d = json.loads(open(f, encoding="utf-8").read())
             sid, last = d["sessionId"], int(d.get("lastActivityAt") or 0)
             assert isinstance(sid, str) and sid.startswith("local_")
         except (OSError, ValueError, KeyError, TypeError, AssertionError):
@@ -180,7 +181,7 @@ def claude_sessions():
         title = d.get("title") if isinstance(d.get("title"), str) else ""
         cwd = d.get("cwd") if isinstance(d.get("cwd"), str) else ""
         iso = lambda ms: dt.datetime.fromtimestamp(ms / 1000).astimezone().isoformat(timespec="minutes")
-        items.append({"id": sid, "title": title, "folder": os.path.basename(cwd.rstrip("/")), "lane": path_lane(cwd, title),
+        items.append({"id": sid, "title": title, "folder": os.path.basename(cwd.replace("\\", "/").rstrip("/")), "lane": path_lane(cwd, title),
                       "side": bool(d.get("spawnedFrom")), "created": iso(int(d.get("createdAt") or last)), "last": iso(last)})
     items.sort(key=lambda x: x["last"], reverse=True)
     return {"items": items, "errors": [f"Claude sessions: {bad} files could not be read"] if bad > len(files) // 2 else [],

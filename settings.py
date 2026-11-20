@@ -20,7 +20,7 @@ ROOT = sources.ROOT
 CONFIG = ROOT / "config.json"
 LAYOUT = ROOT / "data" / "layout.json"
 LOCAL = ROOT / "data" / "local.json"
-EKCTL = os.path.expanduser("~/bin/ekctl")
+from platform_util import EKCTL
 
 # key: label on the settings page. The order here is the default page order.
 SECTIONS = {
@@ -83,8 +83,8 @@ def _known_lists(cfg):
     """Reminder list names: every list in Reminders (ekctl), plus any already named in config or seen in data."""
     names = []  # Reminders' own spelling first, so the page shows the names as they appear there
     try:
-        r = subprocess.run([EKCTL, "lists"], capture_output=True, text=True, timeout=15)
-        names += [x["title"] for x in json.loads(r.stdout) if x.get("title")]
+        r = subprocess.run([EKCTL, "lists"], capture_output=True, text=True, timeout=15) if EKCTL else None
+        names += [x["title"] for x in json.loads(r.stdout) if x.get("title")] if r else []
     except (OSError, ValueError, subprocess.SubprocessError, TypeError, KeyError):
         pass
     try:
