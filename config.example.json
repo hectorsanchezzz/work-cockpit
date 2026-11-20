@@ -1,34 +1,34 @@
 {
- "_help": "Edit freely. Lanes appear in this order. hours_budget is hours per week (null hides it). Mapping rules are checked top to bottom: title_keywords first, then the source-specific map, then the team default.",
+ "_help": "Edit freely. Lanes appear in this order. hours_budget is hours per week (null hides it). Mapping rules: title_keywords are matched against an event's title and its course/category. weekly_schedule repeats every week.",
  "stale_days": 14,
  "lanes": [
   {
-   "key": "axis",
-   "name": "Axis Data Labs",
-   "short": "Axis",
+   "key": "ntt",
+   "name": "NTT DATA",
+   "short": "NTT",
    "hours_budget": null
   },
   {
-   "key": "bs",
-   "name": "BSInvestors / Blvck Sigma",
-   "short": "Blvck Sigma",
+   "key": "iot",
+   "name": "Internet de les Coses",
+   "short": "IoT",
    "hours_budget": null
   },
   {
-   "key": "delvion",
-   "name": "Delvion",
+   "key": "gp",
+   "name": "Gestió de Projectes",
+   "short": "Gest. proj.",
    "hours_budget": null
   },
   {
-   "key": "pbe",
-   "name": "Personal Brand Engine",
-   "short": "PBE",
+   "key": "fin",
+   "name": "Introducció a l'Enginyeria Financera",
+   "short": "Eng. fin.",
    "hours_budget": null
   },
   {
-   "key": "tfg",
-   "name": "TFG / UAB",
-   "short": "TFG",
+   "key": "hoquei",
+   "name": "Hoquei",
    "hours_budget": null
   },
   {
@@ -38,55 +38,27 @@
   }
  ],
  "title_keywords": {
-  "Client A": "axis",
-  "Delvion": "delvion",
-  "TFG": "tfg"
+  "Internet de les Coses": "iot",
+  "IoT": "iot",
+  "Gestió de Projectes": "gp",
+  "enginyeria financera": "fin",
+  "NTT": "ntt",
+  "Hoquei": "hoquei"
  },
- "linear_projects": {
-  "Some Linear project": "axis",
-  "Another project": "delvion",
-  "TFG": "tfg"
- },
- "rize_projects": {
-  "Example Rize project": "axis"
- },
- "linear_team_default": {
-  "TEAM1": "axis",
-  "TEAM2": "delvion"
- },
- "reminder_lists": {
-  "work list": "axis",
-  "personal": "personal"
- },
- "reminder_skip_lists": [
-  "groceries"
- ],
+ "linear_projects": {},
+ "rize_projects": {},
+ "linear_team_default": {},
+ "reminder_lists": {},
+ "reminder_skip_lists": [],
  "calendars": {
-  "Work calendar": "axis",
-  "you@example.com": "personal"
+  "UAB": "personal",
+  "Schedule": "personal"
  },
  "_help_calendar_ics": "calendar_ics: iCal (.ics) feeds, the calendar source on Windows. 'name' is the calendar name used in 'calendars' above. The URL may hold a secret token: keep it only in config.json, which is git-ignored.",
  "calendar_ics": [
   {
-   "name": "Work calendar",
-   "url": "https://example.com/calendar.ics"
-  }
- ],
- "_help_weekly_schedule": "weekly_schedule: your fixed timetable, repeated every week. day: mon..sun (or lun..dom). lane: a lane key. Shown as calendar events; no calendar app needed.",
- "weekly_schedule": [
-  {
-   "day": "mon",
-   "start": "09:00",
-   "end": "13:00",
-   "title": "Class",
-   "lane": "personal"
-  },
-  {
-   "day": "wed",
-   "start": "15:00",
-   "end": "18:00",
-   "title": "Work",
-   "lane": "axis"
+   "name": "UAB",
+   "url": "https://example.com/your-calendar.ics"
   }
  ],
  "calendar_keyword_only": [
@@ -99,40 +71,13 @@
  "github_accounts": [
   "your-github-login"
  ],
- "github_repo_keywords": {
-  "tfg": "tfg",
-  "atlas": "delvion"
- },
+ "github_repo_keywords": {},
  "github_owners": {
-  "Some-Org": "axis",
   "your-github-login": "personal"
  },
  "vault_path": "~/development/personal-vault",
- "vault_folders": {
-  "axis": [
-   "Business/Axis Data Labs"
-  ],
-  "bs": [
-   "Business/Blvck Sigma"
-  ],
-  "delvion": [
-   "Business/Delvion"
-  ],
-  "pbe": [
-   "Personal/Personal Brand"
-  ],
-  "tfg": [
-   "Academic/TFG"
-  ],
-  "personal": [
-   "Personal/Money",
-   "Personal/Direction",
-   "Personal/Self"
-  ]
- },
- "redact_words": [
-  "ClientName"
- ],
+ "vault_folders": {},
+ "redact_words": [],
  "vault_ignore_commits": [],
  "_help_vault": "vault_ignore_commits: bulk sync commits that should not count as touching a lane.",
  "code_root": "~/development",
@@ -143,8 +88,106 @@
  "git_author_emails": [
   "you@example.com"
  ],
- "code_path_keywords": {
-  "axis-internal": "axis",
-  "tfg": "tfg"
- }
+ "code_path_keywords": {},
+ "weekly_schedule": [
+  {
+   "day": "mon",
+   "start": "08:30",
+   "end": "12:30",
+   "title": "IoT",
+   "lane": "iot"
+  },
+  {
+   "day": "mon",
+   "start": "14:00",
+   "end": "18:00",
+   "title": "NTT",
+   "lane": "ntt"
+  },
+  {
+   "day": "mon",
+   "start": "22:00",
+   "end": "23:15",
+   "title": "Hoquei",
+   "lane": "hoquei"
+  },
+  {
+   "day": "tue",
+   "start": "10:00",
+   "end": "12:30",
+   "title": "NTT",
+   "lane": "ntt"
+  },
+  {
+   "day": "tue",
+   "start": "14:00",
+   "end": "18:00",
+   "title": "NTT",
+   "lane": "ntt"
+  },
+  {
+   "day": "wed",
+   "start": "10:00",
+   "end": "12:30",
+   "title": "NTT",
+   "lane": "ntt"
+  },
+  {
+   "day": "wed",
+   "start": "14:00",
+   "end": "18:00",
+   "title": "NTT",
+   "lane": "ntt"
+  },
+  {
+   "day": "tue",
+   "start": "20:45",
+   "end": "22:00",
+   "title": "Hoquei",
+   "lane": "hoquei"
+  },
+  {
+   "day": "thu",
+   "start": "08:30",
+   "end": "12:30",
+   "title": "Gestió de Projectes",
+   "lane": "gp"
+  },
+  {
+   "day": "thu",
+   "start": "14:00",
+   "end": "18:00",
+   "title": "NTT",
+   "lane": "ntt"
+  },
+  {
+   "day": "thu",
+   "start": "22:00",
+   "end": "23:15",
+   "title": "Hoquei",
+   "lane": "hoquei"
+  },
+  {
+   "day": "fri",
+   "start": "09:00",
+   "end": "12:30",
+   "title": "NTT",
+   "lane": "ntt"
+  },
+  {
+   "day": "fri",
+   "start": "16:00",
+   "end": "19:00",
+   "title": "Anàlisi de dades financeres",
+   "lane": "fin"
+  },
+  {
+   "day": "fri",
+   "start": "19:30",
+   "end": "20:45",
+   "title": "Hoquei",
+   "lane": "hoquei"
+  }
+ ],
+ "linear": false
 }

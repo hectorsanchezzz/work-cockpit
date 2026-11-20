@@ -11,8 +11,8 @@ FILE = ROOT / "data" / "sources.json"
 # key: (label shown in the panel, default)
 SOURCES = {
     "github_prs": ("GitHub pull requests", True),
-    "github_prs_bs": ("Include Blvck Sigma repos", False),
-    "rize": ("Rize tracked time", True),
+    "github_prs_bs": ("Include extra GitHub accounts (github_bs_accounts)", False),
+    "rize": ("Rize tracked time", False),
     "claude_sessions": ("Claude sessions", False),
 }
 

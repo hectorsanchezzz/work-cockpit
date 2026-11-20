@@ -23,7 +23,6 @@ KEYCHAIN_SERVICE = "cockpit-linear"
 # python.org Python ships without a CA store; use the macOS system bundle.
 CAFILE = "/etc/ssl/cert.pem"
 SSL_CTX = ssl.create_default_context(cafile=CAFILE if os.path.exists(CAFILE) else None)
-ALEIX = "1337d284-41a6-4bed-8361-09157ff0e6f3"
 
 QUERY = """
 query($filter: IssueFilter, $after: String) {
@@ -67,7 +66,7 @@ def main():
     me = {"isMe": {"eq": True}}
     started = fetch(key, {"assignee": me, "state": {"type": {"eq": "started"}}})
     todo = fetch(key, {"assignee": me, "state": {"type": {"eq": "unstarted"}}})
-    review = fetch(key, {"assignee": {"id": {"eq": ALEIX}}, "state": {"name": {"eq": "In Review"}}})
+    review = []  # the original author also tracked a teammate's "In Review" issues; not used here
     del key
     data = {
         "generated": dt.datetime.now().astimezone().isoformat(timespec="minutes"),

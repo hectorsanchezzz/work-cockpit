@@ -1,6 +1,6 @@
 # Work Cockpit
 
-One local page with everything on my plate across lanes (Axis, Blvck Sigma, Delvion, PBE, TFG, Personal), so quiet lanes stop being deferred. Linear and Apple Reminders stay the source of truth. Linear, Calendar and GitHub are only read; the one thing the page writes is a reminder action you click (see below).
+One local page with everything on my plate across lanes (NTT, university subjects, hockey, personal), so quiet lanes stop being deferred. The weekly timetable and the university calendar feed give the days; GitHub is read only.
 
 Live at http://127.0.0.1:8765/ (localhost only, served by `serve.py`), with settings at http://127.0.0.1:8765/settings.html, and `out/summary.json` holds what is left today ("N today") for any tray or status tool you want to point at it.
 

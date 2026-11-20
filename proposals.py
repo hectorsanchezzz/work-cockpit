@@ -1412,7 +1412,7 @@ def prs_block():
     stale = sum(1 for p in items if days_since(p["updated"]) > STALE)
     q = (f'<p class="qline">Could not read {clean("; ".join(src["errors"]))}. Everything else still loads.</p>'
          if src["errors"] else "")
-    scope = "Axis and your own repos" + (", plus Blvck Sigma" if ON["github_prs_bs"] else "")
+    scope = "your repos and the ones where your review is requested" + (", plus the extra accounts" if ON["github_prs_bs"] else "")
     # An empty column is not drawn: its "none" moves into the line under the heading.
     cols = [(t, l) for t, l in (("Review requested", review), ("Yours", mine)) if l]
     none = " ".join(x for x, l in (("No reviews requested.", review), ("No open PRs of yours.", mine)) if not l)

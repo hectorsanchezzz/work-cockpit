@@ -96,7 +96,7 @@ def local_repo_lane(r):
 
 
 def lin_url(iid):
-    return f"https://linear.app/axisdatalabs/issue/{iid}"
+    return f"https://linear.app/issue/{iid}"  # Linear redirects this to the issue's workspace
 
 
 # ---------- assemble per-lane data ----------
@@ -115,7 +115,7 @@ def bump(lane, source, date):
 for iid, title, project, updated, due in LIN.get("aleix_review", []):
     lane = linear_lane(iid, project)
     lanes[lane]["waiting"].append({"kind": "Review", "id": iid, "title": title, "date": updated,
-                                   "url": lin_url(iid), "note": "Aleix, In Review"})
+                                   "url": lin_url(iid), "note": "In Review"})
 
 for bucket in ("mine_started", "mine_todo"):
     for iid, title, status, project, due, updated, prio in LIN.get(bucket, []):

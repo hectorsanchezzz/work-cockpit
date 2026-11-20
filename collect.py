@@ -155,7 +155,7 @@ def vault():
 
 
 def local_repos():
-    """Last commit by Jan (all branches) and newest uncommitted edit, per git repo under code_root."""
+    """Last commit by you (git_author_emails, all branches) and newest uncommitted edit, per git repo under code_root."""
     base = os.path.expanduser(CFG["code_root"])
     skip = set(CFG.get("code_skip", []))
     authors = [f"--author={a}" for a in CFG.get("git_author_emails", [])]
