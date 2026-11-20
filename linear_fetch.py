@@ -70,7 +70,7 @@ def main():
     del key
     data = {
         "generated": dt.datetime.now().astimezone().isoformat(timespec="minutes"),
-        "aleix_review": [[n["identifier"], n["title"], (n.get("project") or {}).get("name"),
+        "review_queue": [[n["identifier"], n["title"], (n.get("project") or {}).get("name"),
                           (n.get("updatedAt") or "")[:10], n.get("dueDate")] for n in review],
         "mine_started": [row(n) for n in started],
         "mine_todo": [row(n) for n in todo],
@@ -78,7 +78,7 @@ def main():
     tmp = ROOT / "data" / "linear.json.tmp"
     tmp.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")))
     tmp.replace(ROOT / "data" / "linear.json")
-    print(f"linear: aleix_review={len(review)} started={len(started)} todo={len(todo)}")
+    print(f"linear: review_queue={len(review)} started={len(started)} todo={len(todo)}")
 
 
 def disabled():
@@ -93,7 +93,7 @@ if __name__ == "__main__":
         (ROOT / "data").mkdir(exist_ok=True)
         (ROOT / "data" / "linear.json").write_text(json.dumps(
             {"generated": dt.datetime.now().astimezone().isoformat(timespec="minutes"),
-             "aleix_review": [], "mine_started": [], "mine_todo": []}))
+             "review_queue": [], "mine_started": [], "mine_todo": []}))
         print("linear: off (config.json linear=false)")
         sys.exit(0)
     try:
@@ -105,7 +105,7 @@ if __name__ == "__main__":
         if not snap.exists():  # first run without a key: an empty snapshot, so the page still renders
             (ROOT / "data").mkdir(exist_ok=True)
             snap.write_text(json.dumps({"generated": dt.datetime.now().astimezone().isoformat(timespec="minutes"),
-                                        "aleix_review": [], "mine_started": [], "mine_todo": []}))
+                                        "review_queue": [], "mine_started": [], "mine_todo": []}))
         lp = ROOT / "data" / "local.json"
         try:
             local = json.loads(lp.read_text())

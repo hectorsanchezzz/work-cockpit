@@ -112,7 +112,7 @@ def bump(lane, source, date):
         t[source] = date
 
 
-for iid, title, project, updated, due in LIN.get("aleix_review", []):
+for iid, title, project, updated, due in LIN.get("review_queue", []):
     lane = linear_lane(iid, project)
     lanes[lane]["waiting"].append({"kind": "Review", "id": iid, "title": title, "date": updated,
                                    "url": lin_url(iid), "note": "In Review"})
