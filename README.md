@@ -10,6 +10,7 @@ This copy runs on **Windows**. Apple Reminders and Calendar do not exist there, 
 
 - Linear: GraphQL API, read-only queries. Personal API key from the `COCKPIT_LINEAR_KEY` environment variable, or from the OS credential store (`pip install keyring`, then `python -m keyring set cockpit-linear cockpit`). Never written to disk.
 - Calendar: iCal / `.ics` feeds listed in `calendar_ics` in `config.json` (name + URL), read only. Works with Moodle, Google Calendar's secret address, Outlook's published calendar, etc. The URL often carries a secret token, so it lives only in `config.json` (git-ignored) and errors never print it. Map a feed to a lane with `calendars` (feed name to lane).
+- Weekly timetable: `weekly_schedule` in `config.json` (day, start, end, title, lane) repeats every week as calendar events (`schedule.py`). Feed events go to a lane by `title_keywords`, matched against the title and the feed's category (for Moodle, the course name).
 - Apple Reminders (macOS only, `~/bin/ekctl`): without `ekctl` there are no reminders and the reminder actions refuse.
 - GitHub: `gh` (install the GitHub CLI and run `gh auth login`). Without it the section shows one quiet error line.
 - Local git repos under `code_root`, and the vault git log.
@@ -58,7 +59,7 @@ Lane mapping rules (including `rize_projects`) and `redact_words` are not on the
 
 - `run.ps1`: one refresh. Takes a lock, then runs collect, Linear, extras, render_v2, proposals --live and build_local.
 - `platform_util.py`: what differs per system: Python path, lock folder, UTF-8 for child scripts, API keys.
-- `ics_feed.py`: iCal feeds into calendar events (standard library only).
+- `ics_feed.py`: iCal feeds into calendar events (standard library only). `schedule.py`: the weekly timetable into events.
 - `sources.py`: which test sources are on (`data/sources.json`).
 - `extras.py`: the enabled test sources into `data/extras.json`.
 - `serve.py`: the localhost server. Serves `out/`, plus `GET`/`POST /api/settings` and `POST /api/reminder` (JSON, own host and origin only). A save rebuilds only what it needs, under the refresh lock.

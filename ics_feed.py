@@ -50,6 +50,7 @@ def parse(text, calendar):
                 if all_day and e > s:  # iCal all-day end is exclusive
                     e -= dt.timedelta(days=1)
                 events.append({"title": cur.get("SUMMARY", ""), "calendar": calendar,
+                               "category": re.sub(r"\s*\[[^\]]*\]\s*$", "", cur.get("CATEGORIES", "")),  # Moodle: the course
                                "start": s.isoformat(timespec="seconds"), "end": e.isoformat(timespec="seconds"),
                                "allDay": all_day})
             cur = None
@@ -60,7 +61,7 @@ def parse(text, calendar):
             try:
                 if name in ("DTSTART", "DTEND"):
                     cur[name] = _when(name, params, value.strip())
-                elif name == "SUMMARY":
+                elif name in ("SUMMARY", "CATEGORIES"):
                     cur[name] = _unescape(value).strip()
             except ValueError:
                 pass

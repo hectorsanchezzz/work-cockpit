@@ -69,7 +69,9 @@ def reminder_lane(r):
 
 
 def event_lane(e):
-    lane = kw_lane(e["title"])
+    if e.get("lane") in LANES:  # fixed by the timetable
+        return e["lane"]
+    lane = kw_lane(e["title"] + " " + (e.get("category") or ""))  # category: the course, from the feed
     if lane:
         return lane
     if e["calendar"] in CFG.get("calendar_keyword_only", []):

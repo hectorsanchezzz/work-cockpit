@@ -80,11 +80,17 @@ def events_via_launchd():
 
 def events(days=7):
     skip = set(CFG["calendar_skip"])
+    fixed = []
+    if CFG.get("weekly_schedule"):  # the timetable, repeated every week
+        import schedule
+        fixed = schedule.events(CFG["weekly_schedule"], days=days)
     if CFG.get("calendar_ics"):  # iCal feeds: the way on Windows
         import ics_feed
         raw, errs = ics_feed.fetch(CFG["calendar_ics"], days=days)
         errors.extend(errs)
-        return [e for e in raw if e.get("calendar") not in skip]
+        return fixed + [e for e in raw if e.get("calendar") not in skip]
+    if fixed and not EKCTL:
+        return fixed
     if not EKCTL:  # no Calendar source configured
         return []
     today = dt.date.today()
