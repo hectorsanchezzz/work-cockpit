@@ -3,7 +3,7 @@
 
 GitHub pull requests: open PRs where your review is requested, and your own open PRs, per gh login.
 The token is passed per call (GH_TOKEN from `gh auth token -u <login>`), never `gh auth switch`.
-Blvck Sigma logins and repos only when their own toggle is on. Read only.
+Extra logins (github_bs_accounts) only when their own toggle is on. Read only.
 
 Rize tracked time: hours per project for this week (Monday to now) and last week, from the Rize GraphQL
 API, mapped to lanes. The key is read from the Keychain (service cockpit-rize) per run, never stored,
@@ -56,7 +56,7 @@ def search(flag, env):
 
 def github_prs(include_bs):
     owners = CFG.get("github_owners", {})
-    bs_accounts = set(CFG.get("github_bs_accounts", ["blvcksigma-app"]))
+    bs_accounts = set(CFG.get("github_bs_accounts", []))
     accounts = [a for a in CFG["github_accounts"] if include_bs or a not in bs_accounts]
     items, errors, seen = [], [], set()
     for user in accounts:
