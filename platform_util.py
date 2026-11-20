@@ -20,6 +20,17 @@ def child_env():
     env = dict(os.environ)
     env["PYTHONUTF8"] = "1"
     env["PYTHONIOENCODING"] = "utf-8"
+    if IS_WINDOWS:  # programs installed after this process started (gh, python): reload PATH from the registry
+        import winreg
+        parts = []
+        for hive, sub in ((winreg.HKEY_LOCAL_MACHINE, r"SYSTEM\CurrentControlSet\Control\Session Manager\Environment"),
+                          (winreg.HKEY_CURRENT_USER, "Environment")):
+            try:
+                with winreg.OpenKey(hive, sub) as k:
+                    parts.append(os.path.expandvars(winreg.QueryValueEx(k, "Path")[0]))
+            except OSError:
+                pass
+        env["PATH"] = os.pathsep.join(parts + [env.get("PATH", "")])
     extra = os.path.expanduser("~/bin")
     if os.path.isdir(extra):
         env["PATH"] = env.get("PATH", "") + os.pathsep + extra

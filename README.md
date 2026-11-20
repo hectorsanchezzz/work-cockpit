@@ -9,6 +9,7 @@ This copy runs on **Windows**. Apple Reminders and Calendar do not exist there, 
 ## Sources
 
 - Linear: GraphQL API, read-only queries. Personal API key from the `COCKPIT_LINEAR_KEY` environment variable, or from the OS credential store (`pip install keyring`, then `python -m keyring set cockpit-linear cockpit`). Never written to disk.
+  To not use Linear at all, set `"linear": false` in `config.json`: no calls, no error line.
 - Calendar: iCal / `.ics` feeds listed in `calendar_ics` in `config.json` (name + URL), read only. Works with Moodle, Google Calendar's secret address, Outlook's published calendar, etc. The URL often carries a secret token, so it lives only in `config.json` (git-ignored) and errors never print it. Map a feed to a lane with `calendars` (feed name to lane).
 - Weekly timetable: `weekly_schedule` in `config.json` (day, start, end, title, lane) repeats every week as calendar events (`schedule.py`). Feed events go to a lane by `title_keywords`, matched against the title and the feed's category (for Moodle, the course name).
 - Apple Reminders (macOS only, `~/bin/ekctl`): without `ekctl` there are no reminders and the reminder actions refuse.
@@ -81,6 +82,8 @@ Needs Python 3.10+ and git. Optional: the GitHub CLI `gh`, and `pip install keyr
 2. Linear key: `setx COCKPIT_LINEAR_KEY lin_api_...` (then open a new terminal), or the keyring command above.
 3. First run: `powershell -ExecutionPolicy Bypass -File run.ps1`, then `python serve.py` and open http://127.0.0.1:8765/. `run.ps1` and `serve.py` set `PYTHONUTF8=1` themselves; set it too if you run the other scripts by hand, or accents break.
 4. Automatic: `powershell -ExecutionPolicy Bypass -File windows\install-tasks.ps1` registers "Cockpit refresh" (at logon, then every 30 minutes) and "Cockpit server" (at logon). `windows\uninstall-tasks.ps1` removes them.
+
+5. Desktop shortcut: `powershell -ExecutionPolicy Bypass -File windows\create-shortcut.ps1` puts "Work Cockpit" on the Desktop and in the Start menu. It starts the server if needed, refreshes if the data is over 30 minutes old, and opens the page.
 
 The macOS pieces (launchd agents, SwiftBar plugin, `run.sh`, Keychain) were removed in the Windows port; they are in the git history before it.
 

@@ -6,6 +6,8 @@ $ErrorActionPreference = "Continue"
 $env:PYTHONUTF8 = "1"
 $env:PYTHONIOENCODING = "utf-8"
 Set-Location $PSScriptRoot
+# Pick up programs installed after this session started (gh, python): reload PATH from the registry.
+$env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [Environment]::GetEnvironmentVariable("Path", "User")
 
 $py = if ($env:COCKPIT_PYTHON) { $env:COCKPIT_PYTHON } else { "python" }
 $lock = Join-Path ([System.IO.Path]::GetTempPath()) "cockpit-refresh.lock"

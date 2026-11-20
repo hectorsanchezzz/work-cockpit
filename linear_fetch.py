@@ -82,7 +82,21 @@ def main():
     print(f"linear: aleix_review={len(review)} started={len(started)} todo={len(todo)}")
 
 
+def disabled():
+    try:
+        return json.loads((ROOT / "config.json").read_text(encoding="utf-8")).get("linear") is False
+    except (OSError, ValueError):
+        return False
+
+
 if __name__ == "__main__":
+    if disabled():  # "linear": false in config.json: no calls, an empty snapshot, no error on the page
+        (ROOT / "data").mkdir(exist_ok=True)
+        (ROOT / "data" / "linear.json").write_text(json.dumps(
+            {"generated": dt.datetime.now().astimezone().isoformat(timespec="minutes"),
+             "aleix_review": [], "mine_started": [], "mine_todo": []}))
+        print("linear: off (config.json linear=false)")
+        sys.exit(0)
     try:
         main()
     except Exception as e:  # keep the old snapshot, surface the error on the page
