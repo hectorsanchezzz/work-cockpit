@@ -6,35 +6,59 @@
    "key": "ntt",
    "name": "NTT DATA",
    "short": "NTT",
-   "hours_budget": null
+   "hours_budget": null,
+   "color": [
+    "#0A84FF",
+    "#409CFF"
+   ]
   },
   {
    "key": "iot",
    "name": "Internet de les Coses",
    "short": "IoT",
-   "hours_budget": null
+   "hours_budget": null,
+   "color": [
+    "#E8890C",
+    "#FFB340"
+   ]
   },
   {
    "key": "gp",
    "name": "Gestió de Projectes",
    "short": "Gest. proj.",
-   "hours_budget": null
+   "hours_budget": null,
+   "color": [
+    "#E8890C",
+    "#FFB340"
+   ]
   },
   {
    "key": "fin",
    "name": "Introducció a l'Enginyeria Financera",
    "short": "Eng. fin.",
-   "hours_budget": null
+   "hours_budget": null,
+   "color": [
+    "#E8890C",
+    "#FFB340"
+   ]
   },
   {
    "key": "hoquei",
    "name": "Hoquei",
-   "hours_budget": null
+   "hours_budget": null,
+   "color": [
+    "#1FA64A",
+    "#30D158"
+   ]
   },
   {
    "key": "personal",
    "name": "Personal",
-   "hours_budget": null
+   "hours_budget": null,
+   "color": [
+    "#8E8E93",
+    "#98989D"
+   ]
   }
  ],
  "title_keywords": {

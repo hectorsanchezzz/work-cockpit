@@ -47,6 +47,10 @@ A Linear issue opens in the Linear app (the page turns `https://linear.app/...` 
 
 The summary tiles open the section behind their number: Overdue opens Carried over, Waiting on you opens the first lane with something waiting, and Lanes going quiet opens the first quiet lane, while each quiet lane's name opens its own. The lane it opens rings once in its colour. A tile is plain text while its target section is hidden.
 
+## Lane colours
+
+Each lane in `config.json` can have `"color": ["#light", "#dark"]` (hex, for the light and dark theme). Lanes that share a colour read as one group: here all the university subjects are orange, NTT blue and hockey green. `build_local.py` injects them into the page and tints each event block.
+
 ## Settings page
 
 `/settings.html` saves as you change things:
